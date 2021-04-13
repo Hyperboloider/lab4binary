@@ -2,8 +2,10 @@
 
 TrackWave::TrackWave(string from, string to) {
 	this->path = filesystem::current_path().string();
-	this->from = from;
-	this->to = to;
+	cout << "input file: ";
+	cin >> this->from;
+	cout << "output file: ";
+	cin >> this->to;
 	Reader();
 }
 
@@ -76,6 +78,26 @@ void TrackWave::scaleFile() {
 	cout << "scaleFactor: ";
 	cin >> scale;
 
+	switch (sample_size) {
+	case 1:
+		scaleTrack(audio8);
+		break;
+	case 2:
+		scaleTrack(audio16);
+		break;
+	default:
+		endError("too much chanels");
+	}
+}
+
+template <typename T>
+T TrackWave::interpolate(int32_t x0, T y0, int32_t x1, T y1, float x) {
+	return y0 + (y1 - y0) * (x - x0) / (x1 - x0);
+}
+
+template <typename T>
+void TrackWave::scaleTrack(T* audio) {
+
 	out = fopen((filesystem::current_path().string() + "\\" + to).c_str(), "wb");
 
 	header.chunkSize += dataInfo.subchunk2Size * (scale - 1);
@@ -84,32 +106,13 @@ void TrackWave::scaleFile() {
 	fwrite(&header, sizeof(header), 1, out);
 	fwrite(&info, sizeof(info), 1, out);
 	fwrite(&dataInfo, sizeof(dataInfo), 1, out);
+
 	float step = round(1 / scale * 1000) / 1000;
 	for (float i = 0; i < samples_count; i += step) {
 		int index_prev = int(i);
 		int index_next = int(i) + 1;
-		int16_t value = interpolate(index_prev, audio16[index_prev], index_next, audio16[index_next], i);
+		T value = interpolate(index_prev, audio[index_prev], index_next, audio[index_next], i);
 		fwrite(&value, sample_size, 1, out);
 	}
 	fclose(out);
-	//TODO: duplication and interpolation methods here
-}
-
-/*
-void TrackWave::scale_track(float scale) {
-	int input_samples = dataInfo.subchunk2Size * 8 / info.bitsPerSample;
-	int output_samples = input_samples * scale;
-	float step = round(1 / scale * 1000) / 1000;
-	int16_t* new_data = new int16_t[output_samples];
-	for (float i = 0; i < input_samples; i += step) {
-		int index_prev = int(i);
-		int index_next = int(i) + 1;
-		int16_t value = interpolate(index_prev, audio16[index_prev], index_next, audio16[index_next], i);
-		new_data[int(i * scale)] = value;
-	}
-}
-*/
-template <typename T>
-T interpolate(int32_t x0,  T y0, int32_t x1, T y1, float x) {
-	return y0 + (y1 - y0) * (x - x0) / (x1 - x0);
 }
