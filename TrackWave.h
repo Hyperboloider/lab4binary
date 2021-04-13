@@ -58,7 +58,6 @@ private:
 public:
 	TrackWave(string, string);
 };
-};
 
 template <typename T>
 T interpolate(int32_t x0, T y0, int32_t x1, T y1, float x);
