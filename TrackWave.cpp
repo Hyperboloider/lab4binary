@@ -1,6 +1,6 @@
 #include "TrackWave.h"
 
-TrackWave::TrackWave(string from, string to) {
+TrackWave::TrackWave() {
 	this->path = filesystem::current_path().string();
 	cout << "input file: ";
 	cin >> this->from;
@@ -115,4 +115,9 @@ void TrackWave::scaleTrack(T* audio) {
 		fwrite(&value, sample_size, 1, out);
 	}
 	fclose(out);
+}
+
+template <typename T>
+T interpolate(int32_t x0,  T y0, int32_t x1, T y1, float x) {
+	return y0 + (y1 - y0) * (x - x0) / (x1 - x0);
 }

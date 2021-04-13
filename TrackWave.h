@@ -60,8 +60,7 @@ private:
 	void scaleTrack(T* audio);
 
 public:
-	TrackWave(string, string);
-	
+	TrackWave();
 	void scaleFile();
 };
 

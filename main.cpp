@@ -1,7 +1,8 @@
 #include "TrackWave.h"
 
 int main() {
-	TrackWave track("shoto.wav", "shoto2.wav");
+	TrackWave track;
 	track.scaleFile();
+	cout << "\nDone\n";
 	return 0;
 }
