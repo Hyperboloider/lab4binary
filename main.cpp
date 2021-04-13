@@ -1,7 +1,7 @@
 #include "TrackWave.h"
 
 int main() {
-	TrackWave track("input.wav", "output.wav");
-
+	TrackWave track("shoto.wav", "shoto2.wav");
+	track.scaleFile();
 	return 0;
 }
