@@ -50,5 +50,9 @@ private:
 	FILE* in = NULL;
 
 	void endError(string);
+	void scale_track(float scale);
 	void Reader();
 };
+
+template <typename T>
+T interpolate(int32_t x0, T y0, int32_t x1, T y1, float x);
