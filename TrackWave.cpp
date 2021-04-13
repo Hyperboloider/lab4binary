@@ -1,5 +1,12 @@
 #include "TrackWave.h"
 
+TrackWave::TrackWave(string from, string to) {
+	this->path = filesystem::current_path().string();
+	this->from = from;
+	this->to = to;
+	Reader();
+}
+
 void TrackWave::endError(string msg) {
 	cout << "Error: " << msg << endl;
 	exit(1);

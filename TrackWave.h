@@ -53,4 +53,7 @@ private:
 	int32_t swap_int32_t(int32_t);
 	void endError(string);
 	void Reader();
+
+public:
+	TrackWave(string, string);
 };
