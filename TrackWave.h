@@ -46,9 +46,11 @@ private:
 	int16_t* audio16;
 	string from;
 	string to;
+	string path;
 	FILE* out = NULL;
 	FILE* in = NULL;
 
+	int32_t swap_int32_t(int32_t);
 	void endError(string);
 	void Reader();
 };
