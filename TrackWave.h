@@ -52,9 +52,7 @@ private:
 
 	int32_t swap_int32_t(int32_t);
 	void endError(string);
-	void scale_track(float scale);
 	void Reader();
-	
 public:
 	TrackWave(string, string);
 	void scaleFile();
