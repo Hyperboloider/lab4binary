@@ -145,9 +145,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Scaler.cpp" />
     <ClCompile Include="TrackWave.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Scaler.h" />
     <ClInclude Include="TrackWave.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -80,22 +80,24 @@ void TrackWave::scaleFile() {
 
 	header.chunkSize += dataInfo.subchunk2Size * (scale - 1);
 	dataInfo.subchunk2Size *= scale;
-
+	audio16 = scale_track(audio16);
+	
 	fwrite(&header, sizeof(header), 1, out);
 	fwrite(&info, sizeof(info), 1, out);
 	fwrite(&dataInfo, sizeof(dataInfo), 1, out);
+	//fwrite(audio16, sizeof(audio16), 1, out);
+	for (int i = 0; i < dataInfo.subchunk2Size; i++) {
+		//fwrite(&audio16[i], sizeof(audio16[i]), 1, out);
+	}
+	fclose(out);
+	/*
 	float step = round(1 / scale * 1000) / 1000;
 	for (float i = 0; i < samples_count; i += step) {
 		int index_prev = int(i);
 		int index_next = int(i) + 1;
 		int16_t value = interpolate(index_prev, audio16[index_prev], index_next, audio16[index_next], i);
 		fwrite(&value, sample_size, 1, out);
-	}
-	fclose(out);
+	}*/
+	
 }
 
-
-template <typename T>
-T interpolate(int32_t x0,  T y0, int32_t x1, T y1, float x) {
-	return y0 + (y1 - y0) * (x - x0) / (x1 - x0);
-}

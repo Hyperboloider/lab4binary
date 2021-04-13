@@ -1,12 +1,12 @@
 #define _CRT_SECURE_NO_WARNINGS
-
+#include "Scaler.h"
 #include <iostream>
 #include <stdio.h>
 #include <stdlib.h>
 #include <filesystem>
 #include <fstream>
 
-using namespace std;
+//using namespace std;
 
 struct riffHeader {
 	int32_t chunkId;  
@@ -32,16 +32,13 @@ struct subChunk2 {
 	int32_t subchunk2Size; 
 };
 
-class TrackWave
+class TrackWave: protected Scaler
 {
 private:
 	
 	riffHeader header;
 	subChunk1 info;
 	subChunk2 dataInfo;
-	int sample_size;
-	float scale;
-	int samples_count;
 	int8_t* audio8;
 	int16_t* audio16;
 	string from;
@@ -57,6 +54,6 @@ public:
 	TrackWave(string, string);
 	void scaleFile();
 };
-
+/*
 template <typename T>
-T interpolate(int32_t x0, T y0, int32_t x1, T y1, float x);
+T interpolate(int32_t x0, T y0, int32_t x1, T y1, float x);*/
