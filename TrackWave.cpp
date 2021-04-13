@@ -71,3 +71,19 @@ void TrackWave::Reader() {
 		fclose(in);
 	}
 }
+
+void TrackWave::scaleFile() {
+	cout << "scaleFactor: ";
+	cin >> scale;
+
+	out = fopen((filesystem::current_path().string() + "\\" + to).c_str(), "wb");
+
+	header.chunkSize += dataInfo.subchunk2Size * (scale - 1);
+	dataInfo.subchunk2Size *= scale;
+
+	fwrite(&header, sizeof(header), 1, out);
+	fwrite(&info, sizeof(info), 1, out);
+	fwrite(&dataInfo, sizeof(dataInfo), 1, out);
+
+	//TODO: duplication and interpolation methods here
+}

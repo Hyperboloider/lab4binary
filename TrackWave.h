@@ -56,4 +56,5 @@ private:
 
 public:
 	TrackWave(string, string);
+	void scaleFile();
 };
