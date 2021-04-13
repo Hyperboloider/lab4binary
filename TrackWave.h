@@ -62,6 +62,7 @@ private:
 public:
 	TrackWave();
 	void scaleFile();
+	void showInfo();
 };
 
 

@@ -35,26 +35,11 @@ void TrackWave::Reader() {
 		if (static_cast<int64_t>(header.chunkSize) + 8 != filesystem::file_size(path + "\\" + from)) endError("File size is incorrect");
 		if (header.format != 1163280727) endError("unsupportable filetype");
 
-		cout << "chunkId: 0x" << hex << swap_int32_t(header.chunkId) << endl << dec;
-		cout << "chunkSize: " << static_cast<int64_t>(header.chunkSize) + 8 << endl;
-		cout << "format: 0x" << hex << swap_int32_t(header.format) << endl << dec;
 
 		fread(&info, sizeof(info), 1, in);
 		if (info.subchunk1Id != 544501094) endError("subchunk may be corrupted");
 
-		cout << "subchunk1Id: 0x" << hex << swap_int32_t(info.subchunk1Id) << dec << endl;
-		cout << "subchunkSize: " << info.subchunk1Size << endl;
-		cout << "audioFormat: " << info.audioFormat << endl;
-		cout << "numChannels: " << info.numChannels << endl;
-		cout << "sampleRate: " << info.sampleRate << endl;
-		cout << "byteRate: " << info.byteRate << endl;
-		cout << "blockAlign: " << info.blockAlign << endl;
-		cout << "bitsPerSample: " << info.bitsPerSample << endl;
-
 		fread(&dataInfo, sizeof(dataInfo), 1, in);
-
-		cout << "dataChunkId: 0x" << hex << swap_int32_t(dataInfo.subchunk2Id) << dec << endl;
-		cout << "dataChunkSize" << dataInfo.subchunk2Size << endl;
 
 		sample_size = info.bitsPerSample / 8;
 		samples_count = dataInfo.subchunk2Size * 8 / info.bitsPerSample;
@@ -120,4 +105,23 @@ void TrackWave::scaleTrack(T* audio) {
 template <typename T>
 T interpolate(int32_t x0,  T y0, int32_t x1, T y1, float x) {
 	return y0 + (y1 - y0) * (x - x0) / (x1 - x0);
+}
+
+void TrackWave::showInfo() {
+
+	cout << "chunkId: 0x" << hex << swap_int32_t(header.chunkId) << endl << dec;
+	cout << "chunkSize: " << static_cast<int64_t>(header.chunkSize) + 8 << endl;
+	cout << "format: 0x" << hex << swap_int32_t(header.format) << endl << dec;
+
+	cout << "subchunk1Id: 0x" << hex << swap_int32_t(info.subchunk1Id) << dec << endl;
+	cout << "subchunkSize: " << info.subchunk1Size << endl;
+	cout << "audioFormat: " << info.audioFormat << endl;
+	cout << "numChannels: " << info.numChannels << endl;
+	cout << "sampleRate: " << info.sampleRate << endl;
+	cout << "byteRate: " << info.byteRate << endl;
+	cout << "blockAlign: " << info.blockAlign << endl;
+	cout << "bitsPerSample: " << info.bitsPerSample << endl;
+
+	cout << "dataChunkId: 0x" << hex << swap_int32_t(dataInfo.subchunk2Id) << dec << endl;
+	cout << "dataChunkSize" << dataInfo.subchunk2Size << endl;
 }
