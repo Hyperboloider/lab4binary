@@ -1,3 +1,4 @@
+#pragma once
 #define _CRT_SECURE_NO_WARNINGS
 #include "Scaler.h"
 #include <iostream>
@@ -10,9 +11,7 @@
 
 struct riffHeader {
 	int32_t chunkId;  
-	int32_t chunkSize; 
-					   
-					   
+	int32_t chunkSize; 				   
 	int32_t format;   
 };
 

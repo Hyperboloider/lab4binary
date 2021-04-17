@@ -69,6 +69,7 @@ void TrackWave::Reader() {
 		}
 
 		fclose(in);
+		num_channels = info.numChannels;
 	}
 }
 
@@ -81,13 +82,14 @@ void TrackWave::scaleFile() {
 	header.chunkSize += dataInfo.subchunk2Size * (scale - 1);
 	dataInfo.subchunk2Size *= scale;
 	audio16 = scale_track(audio16);
-	
+	samples_count *= scale;
 	fwrite(&header, sizeof(header), 1, out);
 	fwrite(&info, sizeof(info), 1, out);
 	fwrite(&dataInfo, sizeof(dataInfo), 1, out);
-	//fwrite(audio16, sizeof(audio16), 1, out);
-	for (int i = 0; i < dataInfo.subchunk2Size; i++) {
-		//fwrite(&audio16[i], sizeof(audio16[i]), 1, out);
+	for (int i = 0; i < samples_count; i++) {
+		//cout << audio16[i] << endl;
+		int32_t buffer = audio16[i];
+		fwrite(&buffer, sizeof(audio16[i]), 1, out);
 	}
 	fclose(out);
 	/*
