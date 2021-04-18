@@ -69,11 +69,11 @@ void TrackWave::Reader() {
 		}
 
 		fclose(in);
-		num_channels = info.numChannels;
 	}
 }
 
 void TrackWave::scaleFile() {
+	float scale;
 	cout << "scaleFactor: ";
 	cin >> scale;
 
@@ -81,7 +81,7 @@ void TrackWave::scaleFile() {
 
 	header.chunkSize += dataInfo.subchunk2Size * (scale - 1);
 	dataInfo.subchunk2Size *= scale;
-	audio16 = scale_track(audio16);
+	audio16 = scale_track(audio16, info.numChannels,scale);
 	samples_count *= scale;
 	fwrite(&header, sizeof(header), 1, out);
 	fwrite(&info, sizeof(info), 1, out);
