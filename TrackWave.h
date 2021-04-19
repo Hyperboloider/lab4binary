@@ -31,7 +31,7 @@ struct subChunk2 {
 	int32_t subchunk2Size; 
 };
 
-class TrackWave: protected Scaler
+class TrackWave
 {
 private:
 	
@@ -45,7 +45,8 @@ private:
 	string path;
 	FILE* out = NULL;
 	FILE* in = NULL;
-
+	int samples_count;
+	int sample_size;
 	int32_t swap_int32_t(int32_t);
 	void endError(string);
 	void Reader();
