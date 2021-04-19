@@ -77,21 +77,24 @@ void TrackWave::scaleFile() {
 	cout << "scaleFactor: ";
 	cin >> scale;
 
-	out = fopen((filesystem::current_path().string() + "\\" + to).c_str(), "wb");
-
 	header.chunkSize += dataInfo.subchunk2Size * (scale - 1);
 	dataInfo.subchunk2Size *= scale;
 	Scaler<int16_t> scaler;
 	audio16 = scaler.scale_track(audio16, info.numChannels,scale, sample_size, samples_count);
 	samples_count *= scale;
+	
+	Writer();
+}
+
+void TrackWave::Writer() {
+
+	out = fopen((filesystem::current_path().string() + "\\" + to).c_str(), "wb");
 	fwrite(&header, sizeof(header), 1, out);
 	fwrite(&info, sizeof(info), 1, out);
 	fwrite(&dataInfo, sizeof(dataInfo), 1, out);
 	for (int i = 0; i < samples_count; i++) {
-		//cout << audio16[i] << endl;
 		int32_t buffer = audio16[i];
 		fwrite(&buffer, sizeof(audio16[i]), 1, out);
 	}
 	fclose(out);
 }
-
