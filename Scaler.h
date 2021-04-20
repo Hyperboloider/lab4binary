@@ -35,7 +35,7 @@ T* Scaler::scale_fun(T* audio, int length, float scale) {
 	int out_samples = length * scale;
 	T* new_data = new T[out_samples];
 
-	double step = 1 / scale;
+	double step = 1/scale;
 	for (long int i = 0; i < out_samples; i++) {
 		double index_input = i * step;
 		int index_prev = index_input;
@@ -51,6 +51,7 @@ T* Scaler::scale_fun_channels(T* audio, int samples_count, float scale) {
 	int insertPosition = 0;
 	int  out_samples = samples_count * scale;
 	T* new_data = new T[out_samples];
+	/*
 	for (float i = 0; i < samples_count; i += 1 / scale) {
 		int index_prev = int(i);
 		int index_next = int(i) + 1;
@@ -67,6 +68,24 @@ T* Scaler::scale_fun_channels(T* audio, int samples_count, float scale) {
 
 		new_data[insertPosition] = newValue;
 		insertPosition++;
+	}*/
+	double step = samples_count / out_samples;
+	for (long int i = 0; i < out_samples; i++) {
+		double index_input = i * step;
+		int index_prev = index_input;
+		int index_next = index_input + 1;
+
+		int8_t prevL = getLeft(audio[index_prev]);
+		int8_t prevR = getRight(audio[index_prev]);
+		int8_t nextL = getLeft(audio[index_next]);
+		int8_t nextR = getRight(audio[index_next]);
+
+		int8_t newL = interpolate(index_prev, prevL, index_next, nextL, index_input);
+		int8_t newR = interpolate(index_prev, prevR, index_next, nextL, index_input);
+
+		int16_t newValue = joinCh(newL, newR);
+
+		new_data[i] = newValue;
 	}
 	return new_data;
 }

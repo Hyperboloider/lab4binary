@@ -54,7 +54,7 @@ void TrackWave::Reader() {
 void TrackWave::scaleFile(float s) {
 	float scale = s;
 
-	header.chunkSize += dataInfo.subchunk2Size * (scale - 1);
+	header.chunkSize += int(dataInfo.subchunk2Size * (scale - 1));
 	dataInfo.subchunk2Size *= scale;
 
 	Scaler scaler;
