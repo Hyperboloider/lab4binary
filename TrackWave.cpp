@@ -37,8 +37,14 @@ void TrackWave::Reader() {
 			for (int i = 0; i < samples_count; i++)
 				fread(&audio16[i], sample_size, 1, in);
 		}
+		else if(info.bitsPerSample == 8 && info.numChannels != 2){
+			audio8 = new int8_t[samples_count];
+			for (int i = 0; i < samples_count; i++)
+				fread(&audio8[i], sample_size, 1, in);
+			
+		}
 		else {
-			endError("Incorrect size of samples!");
+			endError("Incorrect size of samples or num channels!");
 		}
 
 		fclose(in);
@@ -52,7 +58,12 @@ void TrackWave::scaleFile(float s) {
 	dataInfo.subchunk2Size *= scale;
 
 	Scaler scaler;
-	audio16 = scaler.scale_track(audio16, info.numChannels, scale, sample_size, samples_count);
+	if (sample_size == 1) {
+		audio8 = scaler.scale_track(audio8, info.numChannels, scale, sample_size, samples_count);
+	}
+	else if (sample_size == 2) {
+		audio16 = scaler.scale_track(audio16, info.numChannels, scale, sample_size, samples_count);
+	}	
 	samples_count *= scale;
 	
 	Writer();
@@ -64,11 +75,18 @@ void TrackWave::Writer() {
 	fwrite(&header, sizeof(header), 1, out);
 	fwrite(&info, sizeof(info), 1, out);
 	fwrite(&dataInfo, sizeof(dataInfo), 1, out);
-	for (int i = 0; i < samples_count; i++) {
-		int32_t buffer = audio16[i];
-		fwrite(&buffer, sizeof(audio16[i]), 1, out);
+	if (sample_size == 1) {
+		for (int i = 0; i < samples_count; i++) {
+			int8_t buffer = audio8[i];
+			fwrite(&buffer, sizeof(audio8[i]), 1, out);
+		}
 	}
-
+	else if (sample_size == 2) {
+		for (int i = 0; i < samples_count; i++) {
+			int16_t buffer = audio16[i];
+			fwrite(&buffer, sizeof(audio16[i]), 1, out);
+		}
+	}
 	fclose(out);
 }
 
