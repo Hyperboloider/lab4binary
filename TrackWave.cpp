@@ -18,8 +18,6 @@ void TrackWave::Reader() {
 		fread(&header, sizeof(header), 1, in);
 
 		if (header.chunkId != 1179011410) endError("no RIFF signature found");
-		cout << "supposed: " << static_cast<int64_t>(header.chunkSize) + 8 << " real: " << filesystem::file_size(path + "\\" + from) << endl;
-		if (static_cast<int64_t>(header.chunkSize) + 8 != filesystem::file_size(path + "\\" + from)) endError("File size is incorrect");
 		if (header.format != 1163280727) endError("unsupportable filetype");
 
 
