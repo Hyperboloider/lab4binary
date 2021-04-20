@@ -39,7 +39,7 @@ private:
 	subChunk1 info;
 	subChunk2 dataInfo;
 	int16_t* audio16;
-	int8_t* audio8;
+	uint8_t* audio8;
 	// file variables
 	string from;
 	string to;

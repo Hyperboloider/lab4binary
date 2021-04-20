@@ -46,6 +46,7 @@ T* Scaler::scale_fun(T* audio, int length, float scale) {
 	return new_data;
 }
 
+
 template <typename T>
 T* Scaler::scale_fun_channels(T* audio, int samples_count, float scale) {
 	int insertPosition = 0;

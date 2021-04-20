@@ -36,7 +36,7 @@ void TrackWave::Reader() {
 				fread(&audio16[i], sample_size, 1, in);
 		}
 		else if(info.bitsPerSample == 8 && info.numChannels != 2){
-			audio8 = new int8_t[samples_count];
+			audio8 = new uint8_t[samples_count];
 			for (int i = 0; i < samples_count; i++)
 				fread(&audio8[i], sample_size, 1, in);
 			
