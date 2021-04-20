@@ -1,6 +1,6 @@
 #include "TrackWave.h"
 
-TrackWave::TrackWave() {
+TrackWave::TrackWave(string from, string to) {
 	this->path = filesystem::current_path().string();
 	this->from = from;
 	this->to = to;

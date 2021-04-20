@@ -1,11 +1,6 @@
 #include "Scaler.h"
 
 
-
-
-
-
-
 int8_t Scaler::getLeft(int16_t val) {
 	return static_cast<int8_t>(val >> 8);
 }
