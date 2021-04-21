@@ -57,12 +57,21 @@ void TrackWave::scaleFile(float s) {
 
 	Scaler scaler;
 	if (sample_size == 1) {
-		audio8 = scaler.scale_track(audio8, info.numChannels, scale, sample_size, samples_count);
+		audio8 = scaler.scale_track(audio8, info.numChannels, abs(scale), sample_size, samples_count);
 	}
 	else if (sample_size == 2) {
-		audio16 = scaler.scale_track(audio16, info.numChannels, scale, sample_size, samples_count);
+		audio16 = scaler.scale_track(audio16, info.numChannels, abs(scale), sample_size, samples_count);
 	}	
-	samples_count *= scale;
+	samples_count *= abs(scale);
+
+	if (scale < 0) {
+		int16_t* new_data = new int16_t[samples_count];
+		for (int i = samples_count - 1; i >= 0; i--) {
+			new_data[i] = audio16[samples_count - i - 1];
+		}
+		audio16 = new_data;
+	}
+	
 	
 	Writer();
 }
