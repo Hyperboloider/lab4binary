@@ -13,6 +13,8 @@ class Scaler
 	T* scale_fun_channels(T* audio, int length, float scale);
 	template <typename T>
 	T interpolate(int32_t x0, T y0, int32_t x1, T y1, float x);
+	template <typename T>
+	T* reverse(T* audio, int length);
 public:
 	template <typename T>
 	T* scale_track(T* audio, int num_channels, float scale, int sample_size, int samples_count);
@@ -76,4 +78,13 @@ T* Scaler::scale_fun_channels(T* audio, int samples_count, float scale) {
 template <typename T>
 T Scaler::interpolate(int32_t x0, T y0, int32_t x1, T y1, float x) {
 	return y0 + (y1 - y0) * (x - x0) / (x1 - x0);
+}
+
+template <typename T>
+T* reverse(T* audio, int length) {
+	T* new_data = new T[length];
+	for (int i = length - 1; i >= 0; i--) {
+		new_data[i] = audio[length - i - 1];
+	}
+	return new_data;
 }

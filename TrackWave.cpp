@@ -65,11 +65,12 @@ void TrackWave::scaleFile(float s) {
 	samples_count *= abs(scale);
 
 	if (scale < 0) {
-		int16_t* new_data = new int16_t[samples_count];
-		for (int i = samples_count - 1; i >= 0; i--) {
-			new_data[i] = audio16[samples_count - i - 1];
+		if (sample_size == 1) {
+			audio8 = reverse(audio8, samples_count);
 		}
-		audio16 = new_data;
+		else if (sample_size == 2) {
+			audio16 = reverse(audio16, samples_count);
+		}
 	}
 	
 	
